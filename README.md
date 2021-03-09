@@ -17,5 +17,5 @@ There are two main components to our analysis that you should look at:
 
 -   the final report with all the visualizations and thought process
     explained: `final_report.pdf`
--   a folder with individual code files/folders for all the group
-    members: `code\...`
+-   a folder with individual code files for all the group members:
+    `code\...`
