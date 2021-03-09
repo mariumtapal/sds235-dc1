@@ -1,0 +1,84 @@
+---
+title: "data_challenge1"
+author: Grace Hartley
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE}
+library(tidyverse)
+```
+
+```{r}
+voter_reg <- read_excel("DC1-data/Voter Registry/Voter Registry.xls")
+
+# need to change to local pathway
+```
+
+
+```{r}
+voter_reg%>% distinct(POB)%>% arrange(POB)
+```
+We can see that the only observations for being born in Alderwood are "Alderwood" or "ALDERWOOD"
+
+
+```{r, eval = FALSE}
+#filter to get only voters who were bown in Alderwood
+hometowners<- voter_reg%>%
+  filter(POB == "Alderwood" | POB == "ALDERWOOD")
+
+# filter to get only voters not born in Alderwood
+from_away <- voter_reg%>%
+  filter(POB!="Alderwood" & POB != "ALDERWOOD")
+
+##not sure if this is necessary or efficient, to create to separate datasets
+```
+
+
+```{r}
+voter_reg<- voter_reg%>%
+  mutate(hometowner = if_else(POB == "Alderwood", TRUE, FALSE))
+  
+```
+
+```{r}
+voter_reg%>%
+  filter(PARTY == "DEMOCRAT")
+
+```
+
+
+```{r, eval = FALSE}
+voter_reg%>%
+  filter(PARTY == "DEMOCRAT" | PARTY == "REPUBLICAN")%>%
+  group_by(PARTY, hometowner)%>%
+  summarize(N = n())
+```
+
+
+```{r}
+# party divide of people born in alderwood vs. NOT born in alderwood
+
+voter_reg%>%
+  filter(PARTY == "DEMOCRAT" | PARTY == "REPUBLICAN")%>%
+  group_by(PARTY)%>%
+  summarize(num_born_in_ald = sum(hometowner == TRUE), num_transplants = sum(hometowner==FALSE))
+```
+
+
+```{r}
+#see how many in each family
+voter_reg %>%
+  group_by(`LAST NAME`) %>%
+  summarize(N= n())%>%
+  arrange((N))
+```
+
+```{r}
+voter_reg%>%
+  filter(`LAST NAME` == "NELSON" & hometowner == TRUE 
+         )
+```
